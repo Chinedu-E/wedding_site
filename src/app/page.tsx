@@ -1,103 +1,132 @@
-import Image from "next/image";
+'use client'
+import Gallery from "@/components/gallery/Gallery";
+import OurStory from "@/components/our-story/OurStory";
+import Registry from "@/components/registry/Registry";
+import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [isLoaded, setIsLoaded] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#ffd7d4] cursor-[url('/cursor-vine.png'),auto]">
+      {/* Desktop Layout */}
+      <div className="flex flex-col md:flex-row h-screen relative">
+        {/* Left Panel - Content */}
+        <div className={`md:w-1/2 w-full h-1/2 md:h-full bg-[#a78f9d] text-white flex flex-col relative transform transition-all duration-1000 ${isLoaded ? 'translate-x-0' : '-translate-x-full'}`}>
+          {/* Navigation */}
+          <nav className="flex gap-8 p-8 md:text-sm text-xs font-medium tracking-wider">
+            <a href="#" className="hover:opacity-80 transition-all duration-300 hover:scale-105 hover:tracking-widest">
+              HOME
+            </a>
+            <a
+              href="#our-story"
+              className="hover:opacity-80 transition-all duration-300 hover:scale-105 hover:tracking-widest"
+            >
+              OUR STORY
+            </a>
+            <a href="#gallery" className="hover:opacity-80 transition-all duration-300 hover:scale-105 hover:tracking-widest">
+              GALLERY
+            </a>
+            <a href="#registry" className="hover:opacity-80 transition-all duration-300 hover:scale-105 hover:tracking-widest">
+              REGISTRY
+            </a>
+          </nav>
+
+          {/* Main Content */}
+          <div className="flex-1 flex flex-col justify-center px-16 mt-1 md:mt-72">
+            <div className={`transform transition-all duration-1200 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <p className="text-xs md:text-sm font-medium tracking-wider mb-4 md:mb-8 opacity-90">
+                April 16, 2026 | A courthouse wedding
+              </p>
+              <h1 className="font-serif text-4xl md:text-8xl leading-tight hover:text-[#f4f1ef] transition-colors duration-500">
+                Ijay &<br />
+                <span className="inline-block hover:rotate-1 transition-transform duration-300">Airnoh</span>
+              </h1>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        {/* Right Panel - Image */}
+        <div className={`md:w-1/2 w-full h-1/2 md:h-full overflow-hidden transform transition-all duration-1000 delay-200 ${isLoaded ? 'translate-x-0' : 'translate-x-full'}`}>
+          <img
+            src="https://images.unsplash.com/photo-1715285977649-4a83c0820399?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Ijay and Airnoh embracing on steps"
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+        </div>
+        {/* RSVP Button */}
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 transform -translate-y-1/2 rotate-45 transition-all duration-1000 delay-1000 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
+            <Button
+              variant="outline"
+              className="w-24 h-24 rounded-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-black hover:rotate-0 hover:scale-110 transition-all duration-500 font-medium tracking-wider shadow-lg hover:shadow-2xl"
+            >
+              RSVP
+            </Button>
+          </div>
+      </div>
+
+      {/* Desktop Sections */}
+      <div className="block">
+        <OurStory />
+        <Gallery />
+        <Registry />
+      </div>
+
+      {/* Mobile Layout */}
+      {/* <div className="md:hidden min-h-screen relative">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1715285977649-4a83c0820399?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Ijay and Airnoh embracing on steps"
+            className="w-full h-full object-cover"
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+
+        <div className={`relative z-10 bg-[#8B8B7A]/90 backdrop-blur-sm text-white transform transition-all duration-1000 ${isLoaded ? 'translate-y-0' : 'translate-y-full'}`}>
+          
+          <nav className="flex gap-6 p-6 text-xs font-medium tracking-wider justify-center">
+            <a href="#" className="hover:opacity-80 transition-all duration-300 hover:scale-105">
+              HOME
+            </a>
+            <a href="#our-story" className="hover:opacity-80 transition-all duration-300 hover:scale-105">
+              OUR STORY
+            </a>
+            <a href="#gallery" className="hover:opacity-80 transition-all duration-300 hover:scale-105">
+              GALLERY
+            </a>
+            <a href="#registry" className="hover:opacity-80 transition-all duration-300 hover:scale-105">
+              REGISTRY
+            </a>
+          </nav>
+
+          <div className="px-6 pb-8">
+            <p className="text-xs font-medium tracking-wider mb-6 opacity-90">April 16, 2026</p>
+            <h1 className="font-serif text-4xl leading-tight mb-8">
+              Ijay &<br />
+              Airnoh
+            </h1>
+
+            <Button
+              variant="outline"
+              className="w-16 h-16 rounded-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-[#8B8B7A] hover:scale-110 transition-all duration-500 font-medium text-xs tracking-wider shadow-lg"
+            >
+              RSVP
+            </Button>
+          </div>
+        </div>
+
+        <div className="bg-white">
+          <OurStory />
+          <Gallery />
+          <Registry />
+        </div>
+      </div> */}
     </div>
-  );
+  );  
 }
