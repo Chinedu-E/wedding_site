@@ -274,27 +274,27 @@ const OurStory: React.FC = () => {
             <div className="transform hover:scale-105 transition-transform duration-300 max-w-2xl">
               <h3 className="font-serif text-2xl mb-4 text-[#f4f1ef]">How We Met</h3>
               <p className="md:text-lg leading-relaxed opacity-90">
-                It was a rainy Tuesday morning at the little coffee shop on Fifth Street. 
-                Ijay was reading poetry, and Airnoh was sketching the steam rising from her latte. 
-                A shared smile over spilled sugar packets became the beginning of forever.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Sed euismod, urna eu tincidunt consectetur, nisi nisl aliquam enim, 
+                vitae facilisis erat urna at sapien. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
               </p>
             </div>
             
             <div className="transform hover:scale-105 transition-transform duration-300 delay-100 max-w-2xl">
               <h3 className="font-serif text-2xl mb-4 text-[#f4f1ef]">The Proposal</h3>
               <p className="md:text-lg leading-relaxed opacity-90">
-                On a quiet evening walk through the botanical gardens where we had our first date, 
-                Ijay got down on one knee beside the fountain of wishes. 
-                Every wish we'd ever made together was about to come true.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Sed euismod, urna eu tincidunt consectetur, nisi nisl aliquam enim, 
+                vitae facilisis erat urna at sapien. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
               </p>
             </div>
 
             <div className="transform hover:scale-105 transition-transform duration-300 delay-200 max-w-2xl">
               <h3 className="font-serif text-2xl mb-4 text-[#f4f1ef]">Our Journey</h3>
               <p className="md:text-lg leading-relaxed opacity-90">
-                From midnight conversations to Sunday morning pancakes, 
-                from adventure travels to quiet evenings at home. 
-                Every moment has been a step towards this perfect day.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Sed euismod, urna eu tincidunt consectetur, nisi nisl aliquam enim, 
+                vitae facilisis erat urna at sapien. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
               </p>
             </div>
           </div>
