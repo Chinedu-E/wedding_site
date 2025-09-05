@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button } from '../ui/button';
 
 const Registry = () => {
@@ -29,7 +29,7 @@ const Registry = () => {
               
               <div className="space-y-4 text-[#8B8B7A]/80 mb-8">
                 <p className="md:text-lg leading-relaxed">
-                  We're grateful for your love and support as we begin this beautiful chapter together.
+                  We&apos;re grateful for your love and support as we begin this beautiful chapter together.
                 </p>
                 <p className="md:text-sm text-xs opacity-75">
                   All contributions will help us create our dream home and future adventures.
@@ -53,7 +53,7 @@ const Registry = () => {
           
           <div className="mt-16">
             <p className="text-[#8B8B7A]/60 italic md:text-lg max-w-2xl mx-auto">
-              "A successful marriage requires falling in love many times, always with the same person." 
+              &quot;A successful marriage requires falling in love many times, always with the same person.&quot; 
               <span className="block mt-2 md:text-sm text-xs">- Mignon McLaughlin</span>
             </p>
           </div>
