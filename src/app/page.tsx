@@ -46,7 +46,7 @@ export default function Home() {
               </p>
               <h1 className="font-serif text-4xl md:text-8xl leading-tight hover:text-[#f4f1ef] transition-colors duration-500">
                 Ijay &<br />
-                <span className="inline-block hover:rotate-1 transition-transform duration-300">Airnoh</span>
+                <span className="inline-block hover:rotate-1 transition-transform duration-300">Airnorh</span>
               </h1>
             </div>
           </div>
