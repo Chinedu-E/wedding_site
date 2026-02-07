@@ -20,8 +20,8 @@ const playfair = Playfair_Display({
 
 
 export const metadata: Metadata = {
-  title: "Ijay & Airnorh",
-  description: "Ijay & Airnorh",
+  title: "Eno & Ijay",
+  description: "Eno & Ijay Wedding Website",
 };
 
 export default function RootLayout({

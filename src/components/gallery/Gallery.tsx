@@ -1,88 +1,71 @@
-import React, { useState } from 'react'
-import { Button } from '../ui/button';
+import React from "react";
+import Image from "next/image";
 
-interface Photo {
-    id: number;
-    category: string;
-    color: string;
-}
+const PIC_DIR = "/pics";
 
-const Gallery = () => {
-    const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
-    
-    const photos: Photo[] = [
-      { id: 1, category: "Engagement", color: "bg-[#d4b5a0]" },
-      { id: 2, category: "Travel", color: "bg-[#c4b5ab]" },
-      { id: 3, category: "Family", color: "bg-[#b8a99f]" },
-      { id: 4, category: "Friends", color: "bg-[#d0c1b7]" },
-      { id: 6, category: "Memories", color: "bg-[#a8998f]" },
-    ];
-  
-    return (
-      <section id="gallery" className="min-h-screen bg-[#8B8B7A] px-8 py-16">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-serif text-5xl md:text-7xl text-white text-center mb-16 tracking-wide">
-            Gallery
-          </h2>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {photos.map((photo, index) => (
-              <div
-                key={photo.id}
-                className={`relative group cursor-pointer rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 ${photo.color}`}
-                onClick={() => setSelectedImage(photo)}
-                style={{ 
-                  animationDelay: `${index * 100}ms`,
-                  height: index % 3 === 0 ? '300px' : index % 2 === 0 ? '250px' : '200px'
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-white/80 font-serif md:text-lg">{photo.category}</span>
-                </div>
-                <div className="absolute bottom-10 left-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <span className="text-white md:text-sm text-xs bg-black/30 px-2 py-1 rounded">
-                    {photo.category} Photos
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-16">
-            <p className="text-white/80 md:text-lg mb-8 max-w-2xl mx-auto">
-              Every picture tells a story of love, laughter, and the beautiful journey that brought us together.
-            </p>
-            <Button
-              variant="outline"
-              className="border-white hover:bg-white hover:text-[#8B8B7A] px-8 py-3 text-sm md:text-base rounded-full"
+const photoFilenames: string[] = [
+  "20260117_212234.jpg",
+  "20260122_173854.jpg",
+  "20260122_180040.jpg",
+  "20260122_181602.jpg",
+  "20260122_185843.jpg",
+  "20260122_190052.jpg",
+  "20260122_190745.jpg",
+  "20260122_191506.jpg",
+  "20260122_194722.jpg",
+  "20260122_195042.jpg",
+  "20260122_195145.jpg",
+  "20260122_195231.jpg",
+  "20260122_195530.jpg",
+  "20260122_195548.jpg",
+  "20260122_195632.jpg",
+  "20260122_195706.jpg",
+  "20260122_195858.jpg",
+  "20260122_195922.jpg",
+  "20260125_182300.jpg",
+  "20260125_182755.jpg",
+  "20260125_185358.jpg",
+  "2026-01-31 11_51_14.962-0500.jpg",
+  "2026-01-31 11_57_14.356-0500.jpg",
+  "IMG_7296(1).jpg",
+  "IMG_7296 (2).jpg",
+  "IMG_7323 (1).jpg",
+];
+
+const Gallery: React.FC = () => {
+  return (
+    <section
+      id="gallery"
+      className="bg-[#FFF5EF] py-16 md:py-24 px-6 md:px-8 text-slate-800"
+    >
+      <div className="max-w-6xl mx-auto">
+        <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#6B705C] text-center mb-10 md:mb-14 tracking-wide">
+          Gallery
+        </h2>
+        <p className="text-center text-sm md:text-base text-slate-600 max-w-2xl mx-auto mb-12">
+          A glimpse into the quiet, joyful, and in–between moments that brought
+          us to this day.
+        </p>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+          {photoFilenames.map((filename) => (
+            <figure
+              key={filename}
+              className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
             >
-              View All Photos
-            </Button>
-          </div>
+              <Image
+                src={`${PIC_DIR}/${encodeURIComponent(filename)}`}
+                alt="Ijay and Eno"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
+            </figure>
+          ))}
         </div>
-        
-        {/* Modal for selected image */}
-        {selectedImage && (
-          <div 
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedImage(null)}
-          >
-            <div className="relative max-w-4xl w-full">
-              <button 
-                className="absolute -top-12 right-0 text-white md:text-xl text-lg hover:opacity-70"
-                onClick={() => setSelectedImage(null)}
-              >
-                ✕ Close
-              </button>
-              <div className={`w-full h-96 ${selectedImage.color} rounded-lg flex items-center justify-center`}>
-                <span className="text-white font-serif md:text-2xl text-xl">{selectedImage.category} Collection</span>
-              </div>
-            </div>
-          </div>
-        )}
-      </section>
-    );
-  };
+      </div>
+    </section>
+  );
+};
 
-export default Gallery
+export default Gallery;

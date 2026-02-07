@@ -1,260 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-// Type definitions
-interface Position {
-  x: number;
-  y: number;
-}
-
-interface Photo {
-  id: number;
-  src: string;
-  alt: string;
-  initialPosition: Position;
-}
-
-interface DraggablePhotoProps {
-  src: string;
-  alt: string;
-  initialPosition: Position;
-  onDrag?: (position: Position) => void;
-  zIndex?: number;
-  onMouseDown?: () => void;
-}
-
-interface DragState {
-  x: number;
-  y: number;
-}
-
-const DraggablePhoto: React.FC<DraggablePhotoProps> = ({ 
-  src, 
-  alt, 
-  initialPosition, 
-  onDrag,
-  zIndex = 1,
-  onMouseDown: onMouseDownCallback
-}) => {
-  const [position, setPosition] = useState<Position>(initialPosition);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [dragStart, setDragStart] = useState<DragState>({ x: 0, y: 0 });
-  const photoRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-    setIsDragging(true);
-    
-    if (photoRef.current) {
-      const rect = photoRef.current.getBoundingClientRect();
-      setDragStart({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      });
-    }
-    
-    // Callback to bring this photo to front
-    onMouseDownCallback?.();
-  };
-
-  const handleMouseMove = (e: MouseEvent): void => {
-    if (!isDragging || !photoRef.current) return;
-    
-    const container = photoRef.current.parentElement?.getBoundingClientRect();
-    if (!container) return;
-
-    const photoWidth = 200;
-    const photoHeight = 200; // Approximate height including padding and text
-    
-    const newPosition: Position = {
-      x: Math.max(0, Math.min(container.width - photoWidth, e.clientX - container.left - dragStart.x)),
-      y: Math.max(0, Math.min(container.height - photoHeight, e.clientY - container.top - dragStart.y))
-    };
-    
-    setPosition(newPosition);
-    onDrag?.(newPosition);
-  };
-
-  const handleMouseUp = (): void => {
-    setIsDragging(false);
-  };
-
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    setIsDragging(true);
-    
-    if (photoRef.current) {
-      const rect = photoRef.current.getBoundingClientRect();
-      setDragStart({
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      });
-    }
-    
-    onMouseDownCallback?.();
-  };
-
-  const handleTouchMove = (e: TouchEvent): void => {
-    if (!isDragging || !photoRef.current) return;
-    
-    e.preventDefault();
-    const touch = e.touches[0];
-    const container = photoRef.current.parentElement?.getBoundingClientRect();
-    if (!container) return;
-
-    const photoWidth = 200;
-    const photoHeight = 200;
-    
-    const newPosition: Position = {
-      x: Math.max(0, Math.min(container.width - photoWidth, touch.clientX - container.left - dragStart.x)),
-      y: Math.max(0, Math.min(container.height - photoHeight, touch.clientY - container.top - dragStart.y))
-    };
-    
-    setPosition(newPosition);
-    onDrag?.(newPosition);
-  };
-
-  const handleTouchEnd = (): void => {
-    setIsDragging(false);
-  };
-
-  useEffect(() => {
-    if (isDragging) {
-      const handleMouseMoveEvent = (e: MouseEvent) => handleMouseMove(e);
-      const handleMouseUpEvent = () => handleMouseUp();
-      const handleTouchMoveEvent = (e: TouchEvent) => handleTouchMove(e);
-      const handleTouchEndEvent = () => handleTouchEnd();
-
-      document.addEventListener('mousemove', handleMouseMoveEvent);
-      document.addEventListener('mouseup', handleMouseUpEvent);
-      document.addEventListener('touchmove', handleTouchMoveEvent, { passive: false });
-      document.addEventListener('touchend', handleTouchEndEvent);
-      
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMoveEvent);
-        document.removeEventListener('mouseup', handleMouseUpEvent);
-        document.removeEventListener('touchmove', handleTouchMoveEvent);
-        document.removeEventListener('touchend', handleTouchEndEvent);
-      };
-    }
-  }, [isDragging, dragStart]);
-
-  return (
-    <div
-      ref={photoRef}
-      className={`absolute bg-white p-3 rounded-lg shadow-lg cursor-grab active:cursor-grabbing transform transition-transform duration-200 hover:scale-105 ${
-        isDragging ? 'rotate-2 shadow-xl' : 'hover:rotate-1'
-      }`}
-      style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        width: '200px',
-        userSelect: 'none',
-        zIndex: zIndex,
-        touchAction: 'none'
-      }}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
-    >
-      <img
-        src={src}
-        alt={alt}
-        className="w-full h-32 object-cover pointer-events-none"
-        draggable={false}
-      />
-      <div className="text-xs text-gray-600 mt-2 text-center font-serif italic">
-        {alt}
-      </div>
-    </div>
-  );
-};
-
-const DraggablePhotosArea: React.FC = () => {
-  const [photoZIndexes, setPhotoZIndexes] = useState<Record<number, number>>({});
-  const [dragPositions, setDragPositions] = useState<Record<number, Position>>({});
-
-  const photos: Photo[] = [
-    {
-      id: 1,
-      src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop",
-      alt: "First Date",
-      initialPosition: { x: 50, y: 30 }
-    },
-    {
-      id: 2,
-      src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop",
-      alt: "The Proposal",
-      initialPosition: { x: 180, y: 120 }
-    },
-    {
-      id: 3,
-      src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop",
-      alt: "Engagement",
-      initialPosition: { x: 100, y: 200 }
-    },
-    {
-      id: 4,
-      src: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400&h=300&fit=crop",
-      alt: "Together",
-      initialPosition: { x: 300, y: 80 }
-    }
-  ];
-
-  const handlePhotoMouseDown = (photoId: number): void => {
-    const maxZ = Math.max(...Object.values(photoZIndexes), 0);
-    setPhotoZIndexes(prev => ({
-      ...prev,
-      [photoId]: maxZ + 1
-    }));
-  };
-
-  const handlePhotoDrag = (photoId: number, position: Position): void => {
-    setDragPositions(prev => ({
-      ...prev,
-      [photoId]: position
-    }));
-  };
-
-  // Initialize z-indexes
-  useEffect(() => {
-    const initialZIndexes: Record<number, number> = {};
-    photos.forEach((photo, index) => {
-      initialZIndexes[photo.id] = index + 1;
-    });
-    setPhotoZIndexes(initialZIndexes);
-  }, []);
-
-  return (
-    <div className="relative w-full h-[70vh] rounded-lg overflow-hidden">
-      <div className="absolute top-4 left-4 text-white/70 text-sm font-serif italic z-10">
-        Drag our memories around ✨
-      </div>
-      
-      {photos.map((photo: Photo) => (
-        <DraggablePhoto
-          key={photo.id}
-          src={photo.src}
-          alt={photo.alt}
-          initialPosition={photo.initialPosition}
-          zIndex={photoZIndexes[photo.id] || 1}
-          onMouseDown={() => handlePhotoMouseDown(photo.id)}
-          onDrag={(position: Position) => handlePhotoDrag(photo.id, position)}
-        />
-      ))}
-      
-      {/* Optional: Display current positions for debugging */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="absolute bottom-2 right-2 text-xs text-white/50 font-mono">
-          {Object.entries(dragPositions).map(([id, pos]) => (
-            <div key={id}>
-              Photo {id}: ({Math.round(pos.x)}, {Math.round(pos.y)})
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 const OurStory: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -265,42 +10,127 @@ const OurStory: React.FC = () => {
   }, []);
 
   return (
-    <section id="our-story" className="min-h-screen bg-gradient-to-br from-[#c4b5ab] to-[#b8a99f] flex items-center justify-center md:px-8 px-4 py-8">
-      <div className={`h-full text-center transform transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <h2 className="font-serif text-5xl md:text-7xl text-white mb-12 tracking-wide">Our Story</h2>
-        
-        <div className="grid md:grid-cols-2 gap-12 items-center md:items-start">
-          <div className="space-y-6 text-white ">
-            <div className="transform hover:scale-105 transition-transform duration-300 max-w-2xl">
-              <h3 className="font-serif text-2xl mb-4 text-[#f4f1ef]">How We Met</h3>
-              <p className="md:text-lg leading-relaxed opacity-90">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Sed euismod, urna eu tincidunt consectetur, nisi nisl aliquam enim, 
-                vitae facilisis erat urna at sapien. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-              </p>
-            </div>
-            
-            <div className="transform hover:scale-105 transition-transform duration-300 delay-100 max-w-2xl">
-              <h3 className="font-serif text-2xl mb-4 text-[#f4f1ef]">The Proposal</h3>
-              <p className="md:text-lg leading-relaxed opacity-90">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Sed euismod, urna eu tincidunt consectetur, nisi nisl aliquam enim, 
-                vitae facilisis erat urna at sapien. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-              </p>
+    <section
+      id="our-story"
+      className="bg-[#F7F4EF] py-16 md:py-24 px-6 md:px-8 text-slate-800"
+    >
+      <div
+        className={`max-w-6xl mx-auto transform transition-all duration-700 ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+        }`}
+      >
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#6B705C] tracking-wide">
+            Our Story
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+          {/* Text column */}
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <h3 className="font-serif text-xl md:text-2xl text-[#6B705C]">
+                How We Met
+              </h3>
+              <div className="text-sm md:text-base leading-relaxed text-slate-700 space-y-4 text-left">
+                <p>
+                  We may have been worlds apart, but our paths crossed in the
+                  most modern way: social media. Because when two people are
+                  meant to be, the algorithm doesn’t stand a chance.
+                </p>
+                <p>
+                  Ijay came on Eno’s “For You” page, proving that scrolling
+                  really can change your life. We started chatting around
+                  November 2022. At the time, Eno was in Nigeria and Ijay was in
+                  Canada—and, by pure coincidence (or divine planning), Ijay
+                  already had a Christmas trip to Nigeria in motion.
+                </p>
+                <p>
+                  What began on TikTok moved to WhatsApp, and that’s where the
+                  connection picked up. Our conversations were full of
+                  curiosity and questions. We talked about life as it was, and
+                  life as we hoped it would become—love, faith, values, and the
+                  future we wanted to build.
+                </p>
+                <p>
+                  Being in two different places required intention, so we took
+                  our time learning who we were and what we stood for. When we
+                  met in Nigeria for the first time in December 2022, it didn’t
+                  take long to realize this was something special. And from the
+                  day we chose each other—February 28, 2023—we began walking
+                  toward the same future.
+                </p>
+              </div>
             </div>
 
-            <div className="transform hover:scale-105 transition-transform duration-300 delay-200 max-w-2xl">
-              <h3 className="font-serif text-2xl mb-4 text-[#f4f1ef]">Our Journey</h3>
-              <p className="md:text-lg leading-relaxed opacity-90">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Sed euismod, urna eu tincidunt consectetur, nisi nisl aliquam enim, 
-                vitae facilisis erat urna at sapien. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-              </p>
+            <div className="space-y-3 pt-4 border-t border-[#DDBEA9]/60">
+              <h3 className="font-serif text-xl md:text-2xl text-[#6B705C]">
+                The Proposal & Journey
+              </h3>
+              <div className="text-sm md:text-base leading-relaxed text-slate-700 space-y-4 text-left">
+                <p>
+                  From the very first day I met Ijay, my life shifted in a way I
+                  couldn’t explain. I had never met someone so gentle, so
+                  intentional, so genuinely pure of heart. Loving her felt
+                  certain—like something my soul recognized long before I
+                  understood it myself.
+                </p>
+                <p>
+                  In London, during a quiet paint-and-sip, surrounded by colour,
+                  laughter, and the ease that only comes from being with your
+                  person, I finally spoke. I told her how distance had only made
+                  my love grow deeper, how life with her felt honest and safe
+                  and full. Then I asked her to be mine forever.
+                </p>
+                <p>
+                  It wasn’t just a question; it was a promise—to choose each
+                  other daily, to grow together, to keep learning love, and to
+                  keep walking toward the future we had already begun building.
+                  And she said yes.
+                </p>
+                <p>
+                  Since then, our journey has been full of grace, patience, and
+                  a lot of choosing. Distance has been a blessing in disguise,
+                  teaching us to communicate deeply, to cherish every visit, and
+                  to care for even the small, ordinary moments. We&apos;re
+                  saying yes to more adventures, more growth, and a lifetime of
+                  finding forever in the everyday—together.
+                </p>
+              </div>
             </div>
           </div>
-          
-          <div className="relative h-full w-full">
-            <DraggablePhotosArea />
+
+          {/* Image column */}
+          <div className="max-w-md mx-auto md:mx-0 w-full">
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              <div className="col-span-1 row-span-2 relative aspect-[3/4] rounded-3xl overflow-hidden shadow-md bg-[#FFF5EF]">
+                <Image
+                  src="/pics/20260125_182300.jpg"
+                  alt="Ijay and Eno sharing a quiet moment"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </div>
+              <div className="col-span-1 relative aspect-[4/3] rounded-3xl overflow-hidden shadow-md bg-[#FFF5EF]">
+                <Image
+                  src="/pics/20260122_190052.jpg"
+                  alt="Hands intertwined on the wedding day"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </div>
+              <div className="col-span-1 relative aspect-[4/3] rounded-3xl overflow-hidden shadow-md bg-[#FFF5EF]">
+                <Image
+                  src="/pics/20260122_195231.jpg"
+                  alt="A candid laugh between Ijay and Eno"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
