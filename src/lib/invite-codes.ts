@@ -14,6 +14,7 @@ export const INVITE_CODES: Record<string, string> = {
   fg51: "Ada",
   hx93: "Ekene",
   jk24: "Ekom",
+  sp12: "Eno",
   test: "Test",
 } as const;
 
