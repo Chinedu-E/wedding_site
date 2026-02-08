@@ -22,7 +22,7 @@ const Registry = () => {
           variant="outline"
           className="inline-flex items-center justify-center px-10 py-3 rounded-full bg-white text-[#6B705C] border border-[#6B705C]/20 hover:bg-[#6B705C] hover:text-white transition-colors font-medium tracking-[0.16em] text-[11px] uppercase"
         >
-          <a href="https://www.myregistry.com" target="_blank" rel="noreferrer">
+          <a href="https://www.myregistry.com/wedding-registry/ijeoma-ekeruche-and-enobong-ikie-toronto-on/4953343" target="_blank" rel="noreferrer">
             Visit Registry
           </a>
         </Button>

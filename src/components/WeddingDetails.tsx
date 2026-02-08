@@ -46,7 +46,7 @@ const WeddingDetails: React.FC = () => {
               </div>
               <div>
                 <p className="font-semibold text-sm md:text-base text-slate-800">
-                Manchester, UK
+                The Pankhurst Suite, located in Heron House, 47 Lloyd Street, Manchester, M2 5LE.
                 </p>
                 <p className="text-xs md:text-sm text-slate-500">
                   Followed by an intimate celebration with family and friends.

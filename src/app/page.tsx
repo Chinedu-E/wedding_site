@@ -70,15 +70,15 @@ export default function Home() {
         ref={heroRef}
         className="relative min-h-dvh h-screen overflow-hidden"
       >
-        {/* Image layer */}
-        <div className="absolute inset-0">
+        {/* Image layer: cover on mobile, contain on desktop so image isn't over-cropped */}
+        <div className="absolute inset-0 bg-[#6B705C]">
           <Image
-            src="/pics/20260122_173854.jpg"
+            src="/pics/20260122_181602.jpg"
             alt="Eno and Ijay on their wedding day"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center"
+            className="object-cover object-center md:object-contain"
           />
         </div>
         {/* Scrim overlay */}
