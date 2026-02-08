@@ -1,14 +1,14 @@
-'use client'
+"use client";
+
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Gallery from "@/components/gallery/Gallery";
 import OurStory from "@/components/our-story/OurStory";
 import Registry from "@/components/registry/Registry";
 import WeddingDetails from "@/components/WeddingDetails";
 import QuoteBand from "@/components/QuoteBand";
 import { Button } from "@/components/ui/button";
-
 import { getNameForCode, isValidCode } from "@/lib/invite-codes";
 import { RsvpModal } from "@/components/rsvp/RsvpModal";
 
@@ -29,7 +29,7 @@ function handleNavClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
   el?.scrollIntoView({ behavior: "smooth" });
 }
 
-export default function Home() {
+function HomeContent() {
   const heroRef = useRef<HTMLElement>(null);
   const [showFloatingNav, setShowFloatingNav] = useState(false);
   const searchParams = useSearchParams();
@@ -150,5 +150,13 @@ export default function Home() {
         <Registry />
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#F8F9FA]" />}>
+      <HomeContent />
+    </Suspense>
   );
 }
