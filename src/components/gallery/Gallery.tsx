@@ -1,5 +1,9 @@
-import React from "react";
+"use client";
+
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 const PIC_DIR = "/pics";
 
@@ -32,6 +36,17 @@ const photoFilenames: string[] = [
 ];
 
 const Gallery: React.FC = () => {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const slides = useMemo(
+    () =>
+      photoFilenames.map((filename) => ({
+        src: `${PIC_DIR}/${encodeURIComponent(filename)}`,
+        alt: "Ijay and Eno",
+      })),
+    []
+  );
+
   return (
     <section
       id="gallery"
@@ -47,10 +62,19 @@ const Gallery: React.FC = () => {
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-          {photoFilenames.map((filename) => (
+          {photoFilenames.map((filename, index) => (
             <figure
               key={filename}
-              className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
+              role="button"
+              tabIndex={0}
+              onClick={() => setLightboxIndex(index)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setLightboxIndex(index);
+                }
+              }}
+              className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6B705C] focus-visible:ring-offset-2"
             >
               <Image
                 src={`${PIC_DIR}/${encodeURIComponent(filename)}`}
@@ -63,6 +87,13 @@ const Gallery: React.FC = () => {
           ))}
         </div>
       </div>
+
+      <Lightbox
+        open={lightboxIndex !== null}
+        close={() => setLightboxIndex(null)}
+        index={lightboxIndex ?? 0}
+        slides={slides}
+      />
     </section>
   );
 };
