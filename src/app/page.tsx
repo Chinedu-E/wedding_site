@@ -1,5 +1,6 @@
 'use client'
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Gallery from "@/components/gallery/Gallery";
 import OurStory from "@/components/our-story/OurStory";
@@ -7,6 +8,9 @@ import Registry from "@/components/registry/Registry";
 import WeddingDetails from "@/components/WeddingDetails";
 import QuoteBand from "@/components/QuoteBand";
 import { Button } from "@/components/ui/button";
+
+import { getNameForCode, isValidCode } from "@/lib/invite-codes";
+import { RsvpModal } from "@/components/rsvp/RsvpModal";
 
 const NAV_LINKS = [
   { href: "#", label: "HOME" },
@@ -28,6 +32,15 @@ function handleNavClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const [showFloatingNav, setShowFloatingNav] = useState(false);
+  const searchParams = useSearchParams();
+  const codeParam = searchParams.get("code");
+  const validCode = codeParam && isValidCode(codeParam) ? codeParam : null;
+  const [rsvpModalDismissed, setRsvpModalDismissed] = useState(false);
+  const showRsvpModal = !!validCode && !rsvpModalDismissed;
+
+  useEffect(() => {
+    setRsvpModalDismissed(false);
+  }, [codeParam]);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -71,7 +84,7 @@ export default function Home() {
         className="relative min-h-dvh h-screen overflow-hidden"
       >
         {/* Image layer: cover on mobile, contain on desktop so image isn't over-cropped */}
-        <div className="absolute inset-0 bg-[#6B705C]">
+        <div className="absolute inset-0 bg-[#959e81]">
           <Image
             src="/pics/20260122_181602.jpg"
             alt="Eno and Ijay on their wedding day"
@@ -82,10 +95,7 @@ export default function Home() {
           />
         </div>
         {/* Scrim overlay */}
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"
-          aria-hidden
-        />
+        
         {/* Content overlay */}
         <div className="relative z-10 flex h-full flex-col px-4 pb-8 pt-6 md:px-8 md:pb-12 md:pt-8">
           <nav className="flex gap-4 text-[10px] font-medium uppercase tracking-[0.18em] md:gap-8 md:text-xs" aria-label="Site navigation">
@@ -109,17 +119,27 @@ export default function Home() {
               Eno &<br />
               <span className="inline-block">Ijay</span>
             </h1>
-            <div className="mt-8 md:mt-12">
+            {validCode && <div className="mt-8 md:mt-12">
               <Button
+                onClick={() => setRsvpModalDismissed(false)}
                 variant="outline"
                 className="min-h-[44px] min-w-[44px] rounded-full border border-white/70 bg-transparent px-6 font-medium tracking-[0.18em] text-white shadow-md hover:bg-white hover:text-[#6B705C] transition-colors duration-300 text-xs md:text-[12px]"
               >
                 RSVP
               </Button>
-            </div>
+            </div>}
           </div>
         </div>
       </section>
+
+      {showRsvpModal && validCode && (
+        <RsvpModal
+          open={showRsvpModal}
+          code={validCode}
+          name={getNameForCode(validCode) ?? ""}
+          onClose={() => setRsvpModalDismissed(true)}
+        />
+      )}
 
       {/* Main Sections */}
       <div className="block">

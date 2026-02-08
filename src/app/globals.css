@@ -123,3 +123,35 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes checkmark-circle {
+  from {
+    stroke-dashoffset: 188;
+    opacity: 0.5;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes checkmark-path {
+  from {
+    stroke-dashoffset: 50;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-checkmark-circle {
+  stroke-dasharray: 188;
+  stroke-dashoffset: 188;
+  animation: checkmark-circle 0.45s ease-out forwards;
+}
+
+.animate-checkmark-path {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: checkmark-path 0.35s ease-out 0.4s forwards;
+}

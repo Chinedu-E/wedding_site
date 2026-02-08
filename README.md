@@ -29,6 +29,13 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## RSVP system
+
+- **Invite links:** `https://yoursite.com/?code=x1a7` (and other codes in `src/lib/invite-codes.ts`). When a valid code is present, a modal opens with an RSVP button; after submitting, a “Thank you {name}” screen with a green checkmark is shown.
+- **Dependencies:** Use Supabase for the database: `npm install @supabase/supabase-js`. If you have `@vercel/postgres` installed, remove it: `npm uninstall @vercel/postgres`.
+- **Database:** Set env vars: `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (from Supabase → Settings → API). Create the `rsvps` table by running the SQL in `scripts/init-rsvps.sql` in the Supabase SQL Editor.
+- **Admin list:** Visit `/admin/rsvps` and sign in with the password in `ADMIN_RSVP_PASSWORD` to view who has RSVP’d.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
