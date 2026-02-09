@@ -32,6 +32,8 @@ const photoFilenames: string[] = [
   "2026-01-31 11_57_14.356-0500.jpg",
   "IMG_7296(1).jpg",
   "IMG_7323 (1).jpg",
+  "IMG_7235 (1).jpg",
+  "IMG_7191 (1).jpg",
 ];
 
 const Gallery: React.FC = () => {
