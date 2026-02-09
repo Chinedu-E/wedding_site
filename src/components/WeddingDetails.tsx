@@ -36,7 +36,7 @@ const WeddingDetails: React.FC = () => {
                   Ceremony
                 </p>
                 <p className="text-xs md:text-sm text-slate-500">
-                  2:00 PM · April 16, 2026
+                  2:30 PM · April 16, 2026
                 </p>
               </div>
             </div>
