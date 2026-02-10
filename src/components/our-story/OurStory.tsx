@@ -59,11 +59,13 @@ const OurStory: React.FC = () => {
                   we are.
                 </p>
                 <p>
-                  From sparked interest to faith bringing us to the same
-                  timeline, we met in Nigeria for the first time in December
-                  2022. From there, it didn’t take long to realize this was
-                  something special and from the day we chose each other, Feb
-                  28, 2023, we began walking toward the same future.
+                Our journey began with a shared interest that evolved into the universe
+                aligning our paths, we first met in Nigeria in December 2022. It quickly 
+                became evident that this was something extraordinary, and from the moment 
+                we committed to one another, February, 2023, we embarked on a path toward 
+                a shared future. Despite the distance and different seasons that separate us, 
+                we are steadily approaching the moment when we can finally be together, bringing 
+                with us all the love, patience, and faith that have guided us to this point.
                 </p>
               </div>
             </div>

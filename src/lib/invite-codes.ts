@@ -18,6 +18,7 @@ export const INVITE_CODES: Record<string, string> = {
   test: "Test",
   bx43: "Bianca",
   qp76: "Pope",
+  gc75: "Clara",
 } as const;
 
 export function getNameForCode(code: string): string | undefined {
